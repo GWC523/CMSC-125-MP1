@@ -102,7 +102,7 @@ function App() {
         })
 
         var result = Object.keys(r).map(function(k) {
-          return {resource: k, duration: r[k]}
+          return {resource: k, duration: r[k], stat: 'ongoing' }
         });
 
         setTotalDuration(result)
@@ -162,23 +162,30 @@ function App() {
  
   function setUse() {
     var list = [...ongoing];
+    var duration = [...totalDuration];
     var currentPending = [...pending];
     for(var i = 0; i <= list.length - 1; i++) {
         if(list[i]['duration'] !== 0 && list[i]['status'] != 'done' && list[i]['status'] != 'next user still busy' && list[i]['status'] != 'waiting') {
           //decrement duration per 1 second
           list[i]['duration'] = list[i]['duration'] - 1;
+          if(duration[i]['duration'] !== 0) {
+            duration[i]['stat'] = 'ongoing';
+            duration[i]['duration'] = duration[i]['duration'] - 1;
+          }
         } else {
             //check pending list for specific resource
             const stillPending = currentPending.filter((info) => info.resource === list[i]['resource'] && info.status === 'pending');
 
             if(stillPending.length === 0) {
+              list[i]['user'] = '';
+              list[i]['duration'] = '';
               list[i]['status'] = 'done';
             } else {
               //resource still has pending users
               for(var j = 0; j < currentPending.length; j++) {
                 //check if user is still using a resource then dont swap
                 if(currentPending[j]['resource'] === list[i]['resource'] && currentPending[j]['status'] != 'ongoing') {
-                  const found = list.filter((info) => info.user === currentPending[j]['user'] && info.status !== 'next user still busy' && info.status !== 'done' && info.status !== 'ongoing'); 
+                  const found = list.filter((info) => info.user === currentPending[j]['user'] && info.status !== 'next user still busy' && info.status !== 'done'); 
                   console.log(found)
                   //if free then swap
                   if(found.length === 0) {
@@ -191,6 +198,10 @@ function App() {
                     currentPending[j]['resource'] = 'ongoing';
                     currentPending[j]['status'] = 'ongoing';
                     break;
+                  } else {
+                    //if not free, go to next user
+                    list[i]['status'] = 'next user still busy';
+                    duration[i]['stat'] = 'on hold';
                   }
                 }
               }
@@ -216,33 +227,11 @@ function App() {
   React.useEffect(() => {
       if(start === true) {
         setInterval(function () {
-          setDuration();
+          // setDuration();
           setUse();
           }, 1000); 
       }
   },[start]);
-
- 
-
-
-
-
-
-  
-
-
-  ///////////////////////////////////////////////
-
-  const mockData2 = [
-      {
-      resourceId: "1",
-      elapsedTime: "1 min 30 sec",
-    },
-    {
-      resourceId: "1",
-      elapsedTime: "1 min 30 sec",
-    },
-  ];
 
   
   return (
@@ -267,12 +256,12 @@ function App() {
             tableData={ongoing}
             // counters={counters}
             headingColumns={["Current User","Resource ID", "Duration (seconds)", "Resource Status"]}
-            rowsPerPage={5}
+            rowsPerPage={15}
             />
             <Table
             type={"resources"}
             tableData={totalDuration}
-            headingColumns={["Resource ID", "Total Left Resource To Be Free"]}
+            headingColumns={["Resource ID", "Total Seconds Left For Resource To Be Free", "Status"]}
             rowsPerPage={2}
             />
         </div>
