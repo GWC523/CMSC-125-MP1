@@ -46,6 +46,7 @@ function Table({type, tableData, counter, headingColumns, rowsPerPage, breakOn =
           if(row.status === 'ongoing') {
             return
           }
+
           return <tr key={row.id}>
             {rowData.map((data, index) => 
             <td key={index} data-heading={data.key} className={data.val + "table-cell"}>{data.val}</td>)}

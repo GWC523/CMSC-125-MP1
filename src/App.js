@@ -145,7 +145,7 @@ function App() {
 
     setStart(true);
     return {
-      ongoing: initial,
+      ongoing: initial.sort((a, b) => (a.resource > b.resource) ? 1 : -1),
       pending: newPending
     };
   }
