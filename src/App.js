@@ -180,6 +180,7 @@ function App() {
               list[i]['user'] = '';
               list[i]['duration'] = '';
               list[i]['status'] = 'done';
+              duration[i]['stat'] = 'free';
             } else {
               //resource still has pending users
               for(var j = 0; j < currentPending.length; j++) {
