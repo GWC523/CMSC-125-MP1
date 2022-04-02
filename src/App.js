@@ -239,7 +239,10 @@ function App() {
     <main>
       <h1 className="text-start header">
         <img src={resourceIcon} className="page-icon"/>
-        Resource Manager
+        Resource Manager - Chiu, Gwyneth W.
+        <button className='reload-btn' onClick={() => window.location.reload()}>
+        Reload
+      </button>
       </h1>
       <div className="row">
         <div className="col-sm-6">
@@ -248,7 +251,7 @@ function App() {
             tableData={pending}
             newPending={newPending}
             headingColumns={["User","Resource ID","Duration", "Status"]}
-            rowsPerPage={15}
+            rowsPerPage={16}
             />
         </div>
         <div className="col-sm-6">
@@ -257,13 +260,13 @@ function App() {
             tableData={ongoing}
             // counters={counters}
             headingColumns={["Current User","Resource ID", "Duration (seconds)", "Resource Status"]}
-            rowsPerPage={15}
+            rowsPerPage={7}
             />
             <Table
             type={"resources"}
             tableData={totalDuration}
             headingColumns={["Resource ID", "Total Seconds Left For Resource To Be Free", "Status"]}
-            rowsPerPage={2}
+            rowsPerPage={3}
             />
         </div>
       </div>
