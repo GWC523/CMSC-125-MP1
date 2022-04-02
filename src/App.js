@@ -10,6 +10,7 @@ function App() {
 
   //Set Background-color
   document.body.style = 'background: #2C2C2C;';
+  document.title = 'Chiu, Gwyneth | MP1';
 
   //States
   const [start, setStart] = useState(false);
@@ -148,17 +149,6 @@ function App() {
       pending: newPending
     };
   }
-
-  function setDuration() {
-    var list = [...totalDuration];
-
-    for(var i = 0; i <= list.length - 1; i++) {
-      if(list[i]['duration'] !== 0) {
-        //decrement duration per 1 second
-        list[i]['duration'] = list[i]['duration'] - 1;
-      }
-    }
-  }
  
   function setUse() {
     var list = [...ongoing];
@@ -220,15 +210,12 @@ function App() {
     const data =  setInitialOngoing(initialPending, resourceLabels);
     setOngoing(data.ongoing);
     setPending(data.pending);
-    // console.log(setInitialOngoing(initialPending));
-//UPDATE: NO DUPLICATES
 
   },[]);
 
   React.useEffect(() => {
       if(start === true) {
         setInterval(function () {
-          // setDuration();
           setUse();
           }, 1000); 
       }
