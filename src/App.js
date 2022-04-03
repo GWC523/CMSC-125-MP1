@@ -236,7 +236,7 @@ function App() {
             type={"pending"}
             tableData={pending}
             newPending={newPending}
-            headingColumns={["User","Resource ID","Duration", "Status"]}
+            headingColumns={["User","Resource ID","Duration (seconds)", "Status"]}
             rowsPerPage={16}
             />
         </div>
