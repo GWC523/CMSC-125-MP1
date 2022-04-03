@@ -7,7 +7,7 @@ function Table({type, tableData, counter, headingColumns, rowsPerPage, breakOn =
 
    //PAGINATION 
     const [page, setPage] = useState(1);
-    const {slice, range} = useTable(tableData, page, rowsPerPage);
+    const {slice, range} = useTable(type === 'pending' ? tableData.filter((info) => info.status !== 'ongoing') : tableData, page, rowsPerPage);
 
     let tableClass = 'table-container__table';
 
