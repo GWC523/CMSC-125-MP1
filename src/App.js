@@ -20,7 +20,6 @@ function App() {
   const [counters, setCounters] = useState([]);
   const [totalDuration, setTotalDuration] = useState([]);
 
-  ///////////TO PUT IN SEPARATE FILE//////////////
   const [resources, setResources] = useState([]);
 
   //Generate a random number min - max
@@ -155,7 +154,7 @@ function App() {
     var duration = [...totalDuration];
     var currentPending = [...pending];
     for(var i = 0; i <= list.length - 1; i++) {
-        if(list[i]['duration'] !== 0 && list[i]['status'] != 'done' && list[i]['status'] != 'next user still busy' && list[i]['status'] != 'waiting') {
+        if(list[i]['duration'] !== 0 && list[i]['status'] != 'done' && list[i]['status'] != 'pending users still busy' && list[i]['status'] != 'waiting') {
           //decrement duration per 1 second
           list[i]['duration'] = list[i]['duration'] - 1;
           if(duration[i]['duration'] !== 0) {
@@ -176,7 +175,7 @@ function App() {
               for(var j = 0; j < currentPending.length; j++) {
                 //check if user is still using a resource then dont swap
                 if(currentPending[j]['resource'] === list[i]['resource'] && currentPending[j]['status'] != 'ongoing') {
-                  const found = list.filter((info) => info.user === currentPending[j]['user'] && info.status !== 'next user still busy' && info.status !== 'done'); 
+                  const found = list.filter((info) => info.user === currentPending[j]['user'] && info.status !== 'pending users still busy' && info.status !== 'done'); 
                   console.log(found)
                   //if free then swap
                   if(found.length === 0) {
@@ -191,7 +190,7 @@ function App() {
                     break;
                   } else {
                     //if not free, go to next user
-                    list[i]['status'] = 'next user still busy';
+                    list[i]['status'] = 'pending users still busy';
                     duration[i]['stat'] = 'on hold';
                   }
                 }
