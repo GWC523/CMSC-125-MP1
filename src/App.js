@@ -102,7 +102,7 @@ function App() {
         })
 
         var result = Object.keys(r).map(function(k) {
-          return {resource: k, duration: r[k], stat: 'ongoing' }
+          return {resource: k, duration: r[k], secondsOnHold: 0 ,stat: 'ongoing' }
         });
 
         setTotalDuration(result)
@@ -163,6 +163,9 @@ function App() {
           }
         } else {
             //check pending list for specific resource
+            if(duration[i]['stat'] === 'on hold') {
+              duration[i]['secondsOnHold'] = duration[i]['secondsOnHold'] + 1;
+            }
             const stillPending = currentPending.filter((info) => info.resource === list[i]['resource'] && info.status === 'pending');
 
             if(stillPending.length === 0) {
@@ -251,7 +254,7 @@ function App() {
             <Table
             type={"resources"}
             tableData={totalDuration}
-            headingColumns={["Resource ID", "Total Seconds Left For Resource To Be Free", "Status"]}
+            headingColumns={["Resource", "Total Seconds Left For Resource To Be Free", "Total Seconds On Hold", "Status"]}
             rowsPerPage={3}
             />
         </div>
